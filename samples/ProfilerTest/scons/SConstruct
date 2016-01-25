@@ -1,0 +1,9 @@
+env = Environment()
+
+env['APP_TARGET'] = 'ProfilerTestApp'
+env['APP_SOURCES'] = ['ProfilerTestApp.cpp']
+env['ASSETS'] = ['noise.frag', 'pass.vert']
+
+env = SConscript('../../../scons/SConscript', exports = 'env')
+
+SConscript('../../../../../scons/SConscript', exports = 'env')
