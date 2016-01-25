@@ -10,4 +10,7 @@ _SOURCES = [File('../src/' + s).abspath for s in _SOURCES]
 env.Append(APP_SOURCES = _SOURCES)
 env.Append(CPPPATH = _INCLUDES)
 
+if ('PROFILE' in env) and env['PROFILE']:
+    env.Append(CCFLAGS = '-DCI_PROFILING')
+
 Return('env')

@@ -3,7 +3,6 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
 
-#define CI_PROFILING // enables the scoped profiling calls
 #include "Profiler.h"
 
 using namespace ci;
@@ -26,6 +25,7 @@ ProfilerTestApp::ProfilerTestApp()
 {
 	mNoiseShader = gl::GlslProg::create( loadAsset( "pass.vert" ), loadAsset( "noise.frag" ) );
 
+#ifdef CI_PROFILING
 	getWindow()->getSignalPostDraw().connect( [this]() {
 		if( app::getElapsedFrames() % 20 == 1 ) {
 
@@ -42,6 +42,7 @@ ProfilerTestApp::ProfilerTestApp()
 			}
 		}
 	} );
+#endif
 
 	gl::getStockShader( gl::ShaderDef().color() )->bind();
 }
