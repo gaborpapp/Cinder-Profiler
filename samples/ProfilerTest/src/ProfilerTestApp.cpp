@@ -52,7 +52,9 @@ void ProfilerTestApp::update()
 void ProfilerTestApp::draw()
 {
 	CI_SCOPED_CPU( mCpuProfiler, "Draw" );
+#ifndef CINDER_MAC
 	CI_SCOPED_GPU( mGpuProfiler, "Draw" );
+#endif
 
 	gl::clear();
 
@@ -69,8 +71,15 @@ void ProfilerTestApp::draw()
 		gl::drawSolidRect( app::getWindowBounds() );
 	}
 
+#ifdef CINDER_MAC
+	{
+		CI_SCOPED_GPU( mGpuProfiler, "Circle" );
+#endif
 	// More gpu work...
 	gl::drawSolidCircle( app::getWindowSize()/2, 100.0f, 50000 );
+#ifdef CINDER_MAC
+	}
+#endif
 
 	CI_CHECK_GL();
 }
