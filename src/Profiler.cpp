@@ -7,7 +7,7 @@
 using namespace perf;
 using namespace ci;
 
-#if defined( CINDER_MSW )
+#if defined( CINDER_MSW ) || defined( CINDER_LINUX )
 GpuTimerRef GpuTimer::create()
 {
 	return GpuTimerRef( new GpuTimer );
@@ -129,13 +129,13 @@ std::unordered_map<std::string, double> CpuProfiler::getElapsedTimes()
 	return elapsedTimes;
 }
 
-#if ! defined( CINDER_MSW )
+#if ! defined( CINDER_MSW ) && ! defined( CINDER_LINUX )
 bool GpuProfiler::sActiveTimer = false;
 #endif
 
 void GpuProfiler::start( const std::string& timerName )
 {
-#if ! defined( CINDER_MSW )
+#if ! defined( CINDER_MSW ) && ! defined( CINDER_LINUX )
 	if( sActiveTimer ) {
 		throw std::runtime_error( "Cannot use inner-scope gpu time queries." );
 	}
@@ -151,7 +151,7 @@ void GpuProfiler::stop( const std::string& timerName )
 {
 	CI_ASSERT( mTimers.count( timerName ) );
 	mTimers.at( timerName )->end();
-#if ! defined( CINDER_MSW )
+#if ! defined( CINDER_MSW ) && ! defined( CINDER_LINUX )
 	sActiveTimer = false;
 #endif
 }
@@ -161,7 +161,7 @@ std::unordered_map<std::string, double> GpuProfiler::getElapsedTimes()
 	std::unordered_map<std::string, double> elapsedTimes;
 	for( auto& kv : mTimers ) {
 		auto& timer = kv.second;
-#if defined( CINDER_MSW )
+#if defined( CINDER_MSW ) || defined( CINDER_LINUX )
 		if( timer->getIntervalCount() > 0 ) {
 			auto time = timer->getElapsedTime() / timer->getIntervalCount();
 			elapsedTimes[kv.first] = time;

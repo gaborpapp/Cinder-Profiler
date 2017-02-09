@@ -38,7 +38,7 @@
 
 namespace perf {
 
-#if defined( CINDER_MSW )
+#if defined( CINDER_MSW ) || defined( CINDER_LINUX )
 	typedef std::shared_ptr<class GpuTimer> GpuTimerRef;
 
 	/* Taken from https://github.com/NVIDIAGameWorks/OpenGLSamples/blob/master/extensions/include/NvGLUtils/NvTimers.h
@@ -119,7 +119,7 @@ namespace perf {
 	private:
 		std::unordered_map<std::string, GpuTimerRef> mTimers;
 
-#if ! defined( CINDER_MSW )
+#if ! defined( CINDER_MSW ) && ! defined( CINDER_LINUX )
 		static bool		sActiveTimer;
 #endif
 	};
