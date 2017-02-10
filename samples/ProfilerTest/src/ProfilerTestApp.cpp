@@ -34,9 +34,10 @@ void ProfilerTestApp::update()
 
 void ProfilerTestApp::draw()
 {
-	CI_PROFILE_CPU( "Draw" );
 #ifndef CINDER_MAC
-	CI_PROFILE_GPU( "Draw" );
+	CI_PROFILE( "Draw" );
+#else
+	CI_PROFILE_CPU( "Draw" );
 #endif
 
 	gl::clear();
