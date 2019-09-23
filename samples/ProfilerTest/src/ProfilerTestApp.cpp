@@ -4,6 +4,7 @@
 #include "cinder/Rand.h"
 
 #include "Profiler.h"
+#include "ProfilerGui.h" 
 
 using namespace ci;
 using namespace ci::app;
@@ -49,7 +50,9 @@ void ProfilerTestApp::draw()
 
 	// Expensive GPU pass
 	{
+#if ! defined( CINDER_COCOA )
 		CI_PROFILE_GPU( "Noise pass" );
+#endif
 		gl::ScopedGlslProg s( mNoiseShader );
 		mNoiseShader->uniform( "uTime", (float)app::getElapsedSeconds() );
 		gl::drawSolidRect( app::getWindowBounds() );

@@ -25,12 +25,10 @@
 	#define CI_PROFILE( name )
 #endif
 
-#if defined( CINDER_DLL )
-	#if defined( PERF_EXPORT )
-		#define PERF_API __declspec(dllexport)
-	#else
-		#define PERF_API __declspec(dllimport)
-	#endif
+#if defined( PERF_SHARED_BUILD )
+	#define PERF_API __declspec(dllexport)
+#elif defined( PERF_SHARED )
+	#define PERF_API __declspec(dllimport)
 #else
 	#define PERF_API
 #endif
@@ -103,6 +101,7 @@ namespace perf {
 	public:
 		void start( const std::string& timerName );
 		void stop( const std::string& timerName );
+		void clear();
 
 		std::unordered_map<std::string, double> getElapsedTimes();
 	private:
@@ -113,6 +112,7 @@ namespace perf {
 	public:
 		void start( const std::string& timerName );
 		void stop( const std::string& timerName );
+		void clear();
 
 		std::unordered_map<std::string, double> getElapsedTimes();
 	private:
