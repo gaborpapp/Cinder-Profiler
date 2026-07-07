@@ -11,7 +11,10 @@ if ( NOT TARGET Cinder-Profiler )
 
 	add_library( Cinder-Profiler ${CINDER_PROFILER_SOURCES} )
 
-	target_compile_options( Cinder-Profiler PUBLIC "-std=c++11" )
+	# Minimum standard, not a hard -std flag: a forced -std=c++11 would propagate to
+	# consumers and override their (higher) standard, breaking Cinder's filesystem
+	# selection (ghc::filesystem fallback is not compiled into libcinder).
+	target_compile_features( Cinder-Profiler PUBLIC cxx_std_11 )
 
 	target_include_directories( Cinder-Profiler PUBLIC
 		"${CINDER_PROFILER_INCLUDES}" )
